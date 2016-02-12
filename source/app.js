@@ -26,7 +26,12 @@ var Footer = React.createClass({
 
 var OmdbCall = React.createClass({
   render: function() {
-    return <div>{this.props.title}</div>;
+    return <div>
+    <p><strong>{this.props.title}</strong></p>
+    <p><em>{this.props.year}</em></p>
+    <p><em>{this.props.director}</em></p>
+    <p><em>{this.props.actors}</em></p>
+    <p>{this.props.plot}</p></div>;
   }
 });
 
@@ -51,7 +56,7 @@ $.ajax({
   url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
   success: function(data) {
     ReactDOM.render(
-      <OmdbCall title={data["Title"]} />,
+      <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
       document.getElementById('api-container')
     );
   },

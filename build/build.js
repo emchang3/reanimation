@@ -28937,7 +28937,47 @@ var OmdbCall = React.createClass({
     return React.createElement(
       'div',
       null,
-      this.props.title
+      React.createElement(
+        'p',
+        null,
+        React.createElement(
+          'strong',
+          null,
+          this.props.title
+        )
+      ),
+      React.createElement(
+        'p',
+        null,
+        React.createElement(
+          'em',
+          null,
+          this.props.year
+        )
+      ),
+      React.createElement(
+        'p',
+        null,
+        React.createElement(
+          'em',
+          null,
+          this.props.director
+        )
+      ),
+      React.createElement(
+        'p',
+        null,
+        React.createElement(
+          'em',
+          null,
+          this.props.actors
+        )
+      ),
+      React.createElement(
+        'p',
+        null,
+        this.props.plot
+      )
     );
   }
 });
@@ -28946,14 +28986,14 @@ ReactDOM.render(React.createElement(NavBar, { appName: 'yo', home: 'home', conta
 
 ReactDOM.render(React.createElement(Hello, { name: 'World' }), document.getElementById('container'));
 
-ReactDOM.render(React.createElement(Footer, { author: 'codeforcoffee' }), document.getElementById('footer-container'));
+ReactDOM.render(React.createElement(Footer, { author: 'EMC' }), document.getElementById('footer-container'));
 
 var result = {};
 $.ajax({
   type: 'get',
   url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
   success: function success(data) {
-    ReactDOM.render(React.createElement(OmdbCall, { title: data["Title"] }), document.getElementById('api-container'));
+    ReactDOM.render(React.createElement(OmdbCall, { title: data["Title"], year: data["Year"], director: data["Director"], actors: data["Actors"], plot: data["Plot"] }), document.getElementById('api-container'));
   },
   error: function error() {
     console.log('invalid.');
