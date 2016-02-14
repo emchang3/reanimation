@@ -50,17 +50,44 @@ ReactDOM.render(
   document.getElementById('footer-container')
 );
 
-var result = {};
-$.ajax({
-  type: 'get',
-  url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
-  success: function(data) {
-    ReactDOM.render(
-      <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
-      document.getElementById('api-container')
-    );
-  },
-  error: function() {
-    console.log('invalid.');
-  }
-});
+// $.ajax({
+//   type: 'get',
+//   url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
+//   success: function(data) {
+//     ReactDOM.render(
+//       <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
+//       document.getElementById('api-container')
+//     );
+//   },
+//   error: function() {
+//     console.log('invalid.');
+//   }
+// });
+
+// ReactDOM.render(
+//   <Something />,
+//   document.getElementById("query-container")
+// );
+
+
+
+var q = document.getElementById("query");
+console.log(q);
+function ipCallback() {
+  console.log(q.value);
+  $.ajax({
+    type: 'get',
+    url: 'http://www.omdbapi.com/?s=' + q.value,
+    success: function(data) {
+      console.log(data);
+      // ReactDOM.render(
+      //   <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
+      //   document.getElementById('api-container')
+      // );
+    },
+    error: function() {
+      console.log('invalid.');
+    }
+  });
+};
+q.addEventListener("input", ipCallback, false);
