@@ -28930,77 +28930,51 @@ var Footer = React.createClass({
   }
 });
 
-var OmdbCall = React.createClass({
-  displayName: 'OmdbCall',
+var Result = React.createClass({
+  displayName: 'Result',
 
   render: function render() {
     return React.createElement(
-      'div',
+      'p',
       null,
-      React.createElement(
-        'p',
-        null,
-        React.createElement(
-          'strong',
-          null,
-          this.props.title
-        )
-      ),
-      React.createElement(
-        'p',
-        null,
-        React.createElement(
-          'em',
-          null,
-          this.props.year
-        )
-      ),
-      React.createElement(
-        'p',
-        null,
-        React.createElement(
-          'em',
-          null,
-          this.props.director
-        )
-      ),
-      React.createElement(
-        'p',
-        null,
-        React.createElement(
-          'em',
-          null,
-          this.props.actors
-        )
-      ),
-      React.createElement(
-        'p',
-        null,
-        this.props.plot
-      )
+      this.props.title,
+      ', ',
+      this.props.year,
+      '.'
     );
   }
 });
 
-ReactDOM.render(React.createElement(NavBar, { appName: 'yo', home: 'home', contact: 'reachout' }), document.getElementById('navbar-container'));
+var OmdbCall = React.createClass({
+  displayName: 'OmdbCall',
 
-ReactDOM.render(React.createElement(Hello, { name: 'World' }), document.getElementById('container'));
+  render: function render() {
+    console.log(this.props.data.Search);
+    var results = this.props.data.Search.map(function (item) {
+      return React.createElement(Result, { title: item.Title, year: item.Year });
+    });
+    return React.createElement(
+      'div',
+      null,
+      results
+    );
+  }
+});
 
-ReactDOM.render(React.createElement(Footer, { author: 'EMC' }), document.getElementById('footer-container'));
-
-// $.ajax({
-//   type: 'get',
-//   url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
-//   success: function(data) {
-//     ReactDOM.render(
-//       <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
-//       document.getElementById('api-container')
-//     );
-//   },
-//   error: function() {
-//     console.log('invalid.');
-//   }
-// });
+// ReactDOM.render(
+//   <NavBar appName="yo" home="home" contact="reachout" />,
+//   document.getElementById('navbar-container')
+// );
+//
+// ReactDOM.render(
+//   <Hello name="World" />,
+//   document.getElementById('container')
+// );
+//
+// ReactDOM.render(
+//   <Footer author="EMC" />,
+//   document.getElementById('footer-container')
+// );
 
 // ReactDOM.render(
 //   <Something />,
@@ -29016,10 +28990,7 @@ function ipCallback() {
     url: 'http://www.omdbapi.com/?s=' + q.value,
     success: function success(data) {
       console.log(data);
-      // ReactDOM.render(
-      //   <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
-      //   document.getElementById('api-container')
-      // );
+      ReactDOM.render(React.createElement(OmdbCall, { data: data }), document.getElementById('api-container'));
     },
     error: function error() {
       console.log('invalid.');

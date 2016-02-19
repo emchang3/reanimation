@@ -24,45 +24,36 @@ var Footer = React.createClass({
   }
 });
 
-var OmdbCall = React.createClass({
+var Result = React.createClass({
   render: function() {
-    return <div>
-    <p><strong>{this.props.title}</strong></p>
-    <p><em>{this.props.year}</em></p>
-    <p><em>{this.props.director}</em></p>
-    <p><em>{this.props.actors}</em></p>
-    <p>{this.props.plot}</p></div>;
+    return (<p>{this.props.title}, {this.props.year}.</p>);
   }
 });
 
-ReactDOM.render(
-  <NavBar appName="yo" home="home" contact="reachout" />,
-  document.getElementById('navbar-container')
-);
+var OmdbCall = React.createClass({
+  render: function() {
+    console.log(this.props.data.Search);
+    var results = this.props.data.Search.map(function(item) {
+      return <Result title={item.Title} year={item.Year} />;
+    });
+    return (<div>{results}</div>);
+  }
+});
 
-ReactDOM.render(
-  <Hello name="World" />,
-  document.getElementById('container')
-);
-
-ReactDOM.render(
-  <Footer author="EMC" />,
-  document.getElementById('footer-container')
-);
-
-// $.ajax({
-//   type: 'get',
-//   url: 'http://www.omdbapi.com/?t=kingdom+of+heaven&y=&plot=short&r=json',
-//   success: function(data) {
-//     ReactDOM.render(
-//       <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
-//       document.getElementById('api-container')
-//     );
-//   },
-//   error: function() {
-//     console.log('invalid.');
-//   }
-// });
+// ReactDOM.render(
+//   <NavBar appName="yo" home="home" contact="reachout" />,
+//   document.getElementById('navbar-container')
+// );
+//
+// ReactDOM.render(
+//   <Hello name="World" />,
+//   document.getElementById('container')
+// );
+//
+// ReactDOM.render(
+//   <Footer author="EMC" />,
+//   document.getElementById('footer-container')
+// );
 
 // ReactDOM.render(
 //   <Something />,
@@ -80,10 +71,10 @@ function ipCallback() {
     url: 'http://www.omdbapi.com/?s=' + q.value,
     success: function(data) {
       console.log(data);
-      // ReactDOM.render(
-      //   <OmdbCall title={data["Title"]} year={data["Year"]} director={data["Director"]} actors={data["Actors"]} plot={data["Plot"]} />,
-      //   document.getElementById('api-container')
-      // );
+      ReactDOM.render(
+        <OmdbCall data={data} />,
+        document.getElementById('api-container')
+      );
     },
     error: function() {
       console.log('invalid.');
