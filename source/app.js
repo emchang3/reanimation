@@ -1,84 +1,49 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var $ = require('jquery');
 
-var NavBar = React.createClass({
-  render: function() {
-    return <nav>{this.props.appName}
-      <ul><li><a href={this.props.home}>{this.props.home}</a></li>
-      <li><a href={this.props.contact}>{this.props.contact}</a></li>
-      </ul>
-    </nav>;
-  }
-});
-
-var Hello = React.createClass({
-  render: function() {
-    return <div>Hello {this.props.name}</div>;
-  }
-});
-
-var Footer = React.createClass({
-  render: function() {
-    return <footer>&copy; 2016 {this.props.author}</footer>;
-  }
-});
-
-var Result = React.createClass({
-  render: function() {
-    return (<p>{this.props.title}, {this.props.year}.</p>);
-  }
-});
-
-var OmdbCall = React.createClass({
-  render: function() {
-    console.log(this.props.data.Search);
-    var results = this.props.data.Search.map(function(item) {
-      return <Result title={item.Title} year={item.Year} />;
+var Inside = React.createClass({
+  getInitialState: function() {
+    return {
+      position: {}
+    };
+  },
+  componentDidMount: function() {
+    var pos = ReactDOM.findDOMNode(this).getBoundingClientRect();
+    this.setState({
+      position: {
+        left: pos.left,
+        top: pos.top
+      }
     });
-    return (<div>{results}</div>);
+  },
+  moveRight: function() {
+    var questo = this;
+    var startTime = new Date().getTime();
+    var startPos = [parseInt(this.state.position.left), parseInt(this.state.position.top)];
+
+    var horizontalTimer = setInterval(function () {
+      var step = Math.min(1, (new Date().getTime() - startTime) / 500);
+      questo.setState({
+        position: {
+          left: startPos[0] + (Math.pow(step, 2) * parseInt(500)) + "px",
+          top: startPos[1] + "px"
+        }
+      });
+      console.log(questo.state.position);
+      if( step == 1) { clearInterval(horizontalTimer); };
+    }, 0.0001);
+  },
+  render: function() {
+    var position = this.state.position;
+    return (
+      <div style={position} id="inside">
+        <button onClick={this.moveRight}>Blah</button>
+      </div>
+    );
   }
 });
 
-// ReactDOM.render(
-//   <NavBar appName="yo" home="home" contact="reachout" />,
-//   document.getElementById('navbar-container')
-// );
-//
-// ReactDOM.render(
-//   <Hello name="World" />,
-//   document.getElementById('container')
-// );
-//
-// ReactDOM.render(
-//   <Footer author="EMC" />,
-//   document.getElementById('footer-container')
-// );
-
-// ReactDOM.render(
-//   <Something />,
-//   document.getElementById("query-container")
-// );
-
-
-
-var q = document.getElementById("query");
-console.log(q);
-function ipCallback() {
-  console.log(q.value);
-  $.ajax({
-    type: 'get',
-    url: 'http://www.omdbapi.com/?s=' + q.value,
-    success: function(data) {
-      console.log(data);
-      ReactDOM.render(
-        <OmdbCall data={data} />,
-        document.getElementById('api-container')
-      );
-    },
-    error: function() {
-      console.log('invalid.');
-    }
-  });
-};
-q.addEventListener("input", ipCallback, false);
+ReactDOM.render(
+  <Inside />,
+  document.getElementById("test-container")
+);

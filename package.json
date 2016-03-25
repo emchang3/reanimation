@@ -1,5 +1,5 @@
 {
-  "name": "gulpboilerplate",
+  "name": "reanimate-experiment",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -17,12 +17,10 @@
     "gulp-uglify": "^1.5.2",
     "gulp-watch": "^4.3.5",
     "jquery": "^2.2.0",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6"
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
   }
 }
