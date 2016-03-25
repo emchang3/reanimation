@@ -1,0 +1,15 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px; }
+
+#test-container {
+  position: absolute; }
+
+#inside {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black; }
+
+/*# sourceMappingURL=style.css.map */
