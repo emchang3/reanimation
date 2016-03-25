@@ -19031,52 +19031,80 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":26}],159:[function(require,module,exports){
+"use strict";
+
+module.exports.move = function (context, hDistance, vDistance, easing, time) {
+
+  var startTime = new Date().getTime();
+  var startPos = [parseFloat(context.state.inline.left), parseFloat(context.state.inline.top)];
+
+  var horizontalTimer = setInterval(function () {
+    var step = Math.min(1, (new Date().getTime() - startTime) / time);
+    context.setState({
+      inline: {
+        left: startPos[0] + Math.pow(step, easing) * parseFloat(hDistance) + "px",
+        top: startPos[1] + Math.pow(step, easing) * parseFloat(vDistance) + "px"
+      }
+    });
+    if (step == 1) {
+      clearInterval(horizontalTimer);
+    };
+  }, 0.0001);
+};
+
+module.exports.fade = function (context, opChange, easing, time) {
+
+  var startTime = new Date().getTime();
+  var startOp = parseFloat(context.state.inline.opacity);
+
+  var fadeTimer = setInterval(function () {
+    var step = Math.min(1, (new Date().getTime() - startTime) / time);
+    context.setState({
+      inline: {
+        opacity: startOp + Math.pow(step, easing) * opChange
+      }
+    });
+    if (step == 1) {
+      clearInterval(fadeTimer);
+    };
+  }, 0.0001);
+};
+
+},{}],160:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var $ = require('./animus.js');
 
 var Inside = React.createClass({
   displayName: 'Inside',
 
   getInitialState: function getInitialState() {
     return {
-      position: {}
+      inline: {}
     };
   },
   componentDidMount: function componentDidMount() {
     var pos = ReactDOM.findDOMNode(this).getBoundingClientRect();
     this.setState({
-      position: {
+      inline: {
         left: pos.left,
-        top: pos.top
+        top: pos.top,
+        opacity: window.getComputedStyle(ReactDOM.findDOMNode(this)).opacity
       }
     });
   },
   moveRight: function moveRight() {
     var questo = this;
-    var startTime = new Date().getTime();
-    var startPos = [parseInt(this.state.position.left), parseInt(this.state.position.top)];
-
-    var horizontalTimer = setInterval(function () {
-      var step = Math.min(1, (new Date().getTime() - startTime) / 500);
-      questo.setState({
-        position: {
-          left: startPos[0] + Math.pow(step, 2) * parseInt(500) + "px",
-          top: startPos[1] + "px"
-        }
-      });
-      console.log(questo.state.position);
-      if (step == 1) {
-        clearInterval(horizontalTimer);
-      };
-    }, 0.0001);
+    // $.move(questo, 100, 0, 1, 500);
+    $.fade(questo, -1, 1, 500);
   },
   render: function render() {
-    var position = this.state.position;
+    var inline = this.state.inline;
     return React.createElement(
       'div',
-      { style: position, id: 'inside' },
+      { style: inline, id: 'inside' },
       React.createElement(
         'button',
         { onClick: this.moveRight },
@@ -19088,4 +19116,4 @@ var Inside = React.createClass({
 
 ReactDOM.render(React.createElement(Inside, null), document.getElementById("test-container"));
 
-},{"react":158,"react-dom":2}]},{},[159]);
+},{"./animus.js":159,"react":158,"react-dom":2}]},{},[160]);

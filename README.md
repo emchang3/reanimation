@@ -2,9 +2,6 @@
 
 ##Description
 
-###19 Feb 2015
+###24 Mar 2016
 
-I've managed to build a little real-time search function of the OMDB API,
-nothing too special. Just a proof of concept for using React components to
-render API data. Pretty simple: you type in the box, the results are generated
-as you type.
+I'm making a Node module for animation of React components through inline styles.
