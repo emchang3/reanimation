@@ -20,8 +20,20 @@ var Inside = React.createClass({
   },
   moveRight: function() {
     var questo = this;
-    // $.move(questo, 100, 0, 1, 500);
-    $.fade(questo, -1, 1, 500);
+    $.hMove(questo, 200, 1/2, 500);
+    $.vMove(questo, 200, 2, 500);
+    setTimeout(function() {
+      $.hMove(questo, -200, 2, 500);
+      $.vMove(questo, 200, 1/2, 500);
+      setTimeout(function() {
+        $.hMove(questo, -200, 1/2, 500);
+        $.vMove(questo, -200, 2, 500);
+        setTimeout(function() {
+          $.hMove(questo, 200, 2, 500);
+          $.vMove(questo, -200, 1/2, 500);
+        }, 510);
+      }, 510);
+    }, 510);
   },
   render: function() {
     var inline = this.state.inline;
