@@ -11,8 +11,10 @@ html, body {
 #inside {
   position: absolute;
   // top: 100px;
-  left: 300px;
-  width: 100px;
-  height: 100px;
+  left: 100px;
+  top: 100px;
+  width: 200px;
+  height: 200px;
   border: 1px solid black;
+  // border-radius: 50px;
 }

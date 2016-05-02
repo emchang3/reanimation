@@ -15,7 +15,7 @@ watch(['./source/*.js'], function() {
 // I didn't actually use any ES6. I copied this from a boilerplate.
 gulp.task('default', function() {
   return browserify('./source/app.js')
-        .transform("babelify", {presets: ["es2015", "react"]})
+        .transform("babelify", {presets: ["es2015", 'stage-0', "react"]})
         .bundle()
         .pipe(source('build.js'))
         .pipe(gulp.dest('./build/'))

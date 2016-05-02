@@ -19043,6 +19043,8 @@ module.exports.hMove = function (context, hDistance, easing, time) {
       inline: {
         left: startPos[0] + Math.pow(step, easing) * parseFloat(hDistance) + "px",
         top: context.state.inline.top,
+        width: context.state.inline.width,
+        height: context.state.inline.height,
         opacity: context.state.inline.opacity
       }
     });
@@ -19062,6 +19064,8 @@ module.exports.vMove = function (context, vDistance, easing, time) {
       inline: {
         left: context.state.inline.left,
         top: startPos[1] + Math.pow(step, easing) * parseFloat(vDistance) + "px",
+        width: context.state.inline.width,
+        height: context.state.inline.height,
         opacity: context.state.inline.opacity
       }
     });
@@ -19081,11 +19085,55 @@ module.exports.fade = function (context, opChange, easing, time) {
       inline: {
         left: context.state.inline.left,
         top: context.state.inline.top,
+        width: context.state.inline.width,
+        height: context.state.inline.height,
         opacity: startOp + Math.pow(step, easing) * opChange
       }
     });
     if (step == 1) {
       clearInterval(fadeTimer);
+    };
+  }, 0.0001);
+};
+
+module.exports.hStretch = function (context, hExtend, easing, time) {
+  var startTime = new Date().getTime();
+  var startSize = [parseFloat(context.state.inline.width), parseFloat(context.state.inline.height)];
+
+  var horizontalTimer = setInterval(function () {
+    var step = Math.min(1, (new Date().getTime() - startTime) / time);
+    context.setState({
+      inline: {
+        left: context.state.inline.left,
+        top: context.state.inline.top,
+        width: startSize[0] + Math.pow(step, easing) * parseFloat(hExtend) + "px",
+        height: context.state.inline.height,
+        opacity: context.state.inline.opacity
+      }
+    });
+    if (step == 1) {
+      clearInterval(horizontalTimer);
+    };
+  }, 0.0001);
+};
+
+module.exports.vStretch = function (context, vExtend, easing, time) {
+  var startTime = new Date().getTime();
+  var startSize = [parseFloat(context.state.inline.width), parseFloat(context.state.inline.height)];
+
+  var verticalTimer = setInterval(function () {
+    var step = Math.min(1, (new Date().getTime() - startTime) / time);
+    context.setState({
+      inline: {
+        left: context.state.inline.left,
+        top: context.state.inline.top,
+        width: context.state.inline.width,
+        height: startSize[1] + Math.pow(step, easing) * parseFloat(vExtend) + "px",
+        opacity: context.state.inline.opacity
+      }
+    });
+    if (step == 1) {
+      clearInterval(verticalTimer);
     };
   }, 0.0001);
 };
@@ -19111,26 +19159,46 @@ var Inside = React.createClass({
       inline: {
         left: pos.left,
         top: pos.top,
+        width: pos.width,
+        height: pos.height,
         opacity: window.getComputedStyle(ReactDOM.findDOMNode(this)).opacity
       }
     });
   },
-  moveRight: function moveRight() {
+  vsh: function vsh() {
     var questo = this;
-    $.hMove(questo, 200, 1 / 2, 500);
     $.vMove(questo, 200, 2, 500);
     setTimeout(function () {
-      $.hMove(questo, -200, 2, 500);
-      $.vMove(questo, 200, 1 / 2, 500);
-      setTimeout(function () {
-        $.hMove(questo, -200, 1 / 2, 500);
-        $.vMove(questo, -200, 2, 500);
-        setTimeout(function () {
-          $.hMove(questo, 200, 2, 500);
-          $.vMove(questo, -200, 1 / 2, 500);
-        }, 510);
-      }, 510);
-    }, 510);
+      $.vMove(questo, -200, 1 / 2, 500);
+    }, 550);
+  },
+  hsh: function hsh() {
+    var questo = this;
+    $.hMove(questo, 200, 2, 500);
+    setTimeout(function () {
+      $.hMove(questo, -200, 1 / 2, 500);
+    }, 550);
+  },
+  vex: function vex() {
+    var questo = this;
+    $.vStretch(questo, 200, 2, 500);
+    setTimeout(function () {
+      $.vStretch(questo, -200, 1 / 2, 500);
+    }, 550);
+  },
+  hex: function hex() {
+    var questo = this;
+    $.hStretch(questo, 200, 2, 500);
+    setTimeout(function () {
+      $.hStretch(questo, -200, 1 / 2, 500);
+    }, 550);
+  },
+  fade: function fade() {
+    var questo = this;
+    $.fade(questo, -1, 1 / 2, 500);
+    setTimeout(function () {
+      $.fade(questo, 1, 2, 500);
+    }, 550);
   },
   render: function render() {
     var inline = this.state.inline;
@@ -19139,8 +19207,28 @@ var Inside = React.createClass({
       { style: inline, id: 'inside' },
       React.createElement(
         'button',
-        { onClick: this.moveRight },
-        'Blah'
+        { onClick: this.vsh },
+        'Sh->V'
+      ),
+      React.createElement(
+        'button',
+        { onClick: this.hsh },
+        'Sh->H'
+      ),
+      React.createElement(
+        'button',
+        { onClick: this.vex },
+        'Ex->V'
+      ),
+      React.createElement(
+        'button',
+        { onClick: this.hex },
+        'Ex->H'
+      ),
+      React.createElement(
+        'button',
+        { onClick: this.fade },
+        'Fade'
       )
     );
   }
